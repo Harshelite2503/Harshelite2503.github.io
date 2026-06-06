@@ -67,29 +67,28 @@ new `id`, `kicker`, `title`, `blurb`, and `items`.
 
 **Add/remove globe pins** — edit the `places` array (`{ lat, lng, label }`; `home: true` glows amber).
 
-## 🎹 The Music section (your videos)
+## 🎹 The Music section
 
-Two ways to show your piano videos — pick either or both:
+Already wired up: two piano photos plus three inline video players pulled from your
+**public** Google Drive folder (the folder must stay shared as *"Anyone with the link"*).
 
-1. **Google Drive folder (already wired up).** Your folder is embedded on the page. For visitors
-   to see it (instead of a Google sign-in box), open the folder in Drive → **Share** →
-   **General access → "Anyone with the link" → Viewer.** That's the only step needed.
-2. **Featured clips inline (smoothest playback).** Upload to YouTube (unlisted is fine) and add
-   them to the `music.videos` array:
-   ```js
-   videos: [ { type: "youtube", id: "VIDEO_ID", title: "Clair de Lune" } ]
-   ```
-   (Drive files also work: `{ type: "drive", id: "DRIVE_FILE_ID", title: "..." }`.)
+**Add another recording** — put the clip in the Drive folder, grab its file ID (the part after
+`/file/d/` in its share link), and add a line to `music.videos`:
+```js
+{ type: "drive", id: "DRIVE_FILE_ID", title: "Song name" }
+```
+YouTube works too and plays the smoothest: `{ type: "youtube", id: "VIDEO_ID", title: "..." }`.
 
-Replace the two placeholder tiles by adding your real piano photos to
-`assets/img/beyond/music/` and listing them in `music.items` (then delete the placeholder lines).
+**Add another photo** — drop it in `assets/img/beyond/music/` and add it to `music.items`
+(same format as the other sections).
 
 ## Still to personalize  ⚠️
 
 Search the code for `TODO Harsh`:
 1. **Social links** (Contact section in `index.html`) — add your real LinkedIn/GitHub URLs.
 2. **Travel numbers** (`beyond-data.js` → `stats`) — set your real counts.
-3. **Music** — make the Drive folder public (above) and/or add YouTube clips + your piano photos.
+
+(Music is done — the Drive folder is public and three covers are embedded.)
 
 Everything else (email, phone, experience, projects, publications, captions) is already filled in.
 

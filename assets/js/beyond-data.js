@@ -101,15 +101,17 @@ window.BEYOND_DATA = {
       id: "music",
       kicker: "At the piano",
       title: "When I'm not in a terminal,<br>I'm at the <em>keys.</em>",
-      blurb: "Piano is my other language. Recordings live in the gallery below — give them a listen.",
-      // Set this folder's sharing to "Anyone with the link" so the grid renders.
+      blurb: "Piano is my other language — a few covers and late-night takes. Give them a listen.",
       driveFolderId: "1sPulezzx62N8_qvIWaPA_epb2FBFCb4k",
-      // Feature specific clips inline (optional). Example:
-      // videos: [ { type: "youtube", id: "VIDEO_ID", title: "Clair de Lune" } ],
-      videos: [],
+      // Inline players (portrait phone videos from the Drive folder)
+      videos: [
+        { type: "drive", id: "12ZesD0LuiZwdgyEfM-7iSQiG_i4BB7Xg", title: "Kahani Suno" },
+        { type: "drive", id: "1Je_EXKABXFVn8pVjER-VOGjc_vkLW5D-", title: "Kuch Kuch Hota Hai" },
+        { type: "drive", id: "1GSI5auFG0mQelQAiagc1KtjjyGYp5eQn", title: "Improvisation" }
+      ],
       items: [
-        { img: "assets/img/beyond/music/placeholder.svg", w: 800, h: 1000, location: "Music", caption: "Add your photo", alt: "Placeholder — add your piano photos", placeholder: true },
-        { img: "assets/img/beyond/music/placeholder.svg", w: 800, h: 1000, location: "Music", caption: "Add your photo", alt: "Placeholder — add your piano photos", placeholder: true }
+        { img: "assets/img/beyond/music/piano-2.jpg", w: 1125, h: 1500, location: "Practice room", caption: "At the grand",        alt: "Harsh playing a grand piano by a window at night" },
+        { img: "assets/img/beyond/music/piano-1.jpg", w: 1125, h: 1500, location: "After hours",    caption: "Just me & the keys", alt: "A grand piano keyboard lit by a warm lamp at night" }
       ]
     }
   ]

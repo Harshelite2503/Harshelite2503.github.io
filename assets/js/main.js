@@ -35,7 +35,13 @@
     const src = v.type === "drive"
       ? `https://drive.google.com/file/d/${v.id}/preview`
       : `https://www.youtube-nocookie.com/embed/${v.id}`;
-    return `<div class="video-embed"><iframe src="${src}" title="${esc(v.title || "Video")}" loading="lazy" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div>`;
+    const cap = v.title
+      ? `<figcaption class="video-card__cap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>${esc(v.title)}</figcaption>`
+      : "";
+    return `<figure class="video-card">
+        <div class="video-embed"><iframe src="${src}" title="${esc(v.title || "Video")}" loading="lazy" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div>
+        ${cap}
+      </figure>`;
   }
   function renderBeyond() {
     const data = window.BEYOND_DATA;
@@ -55,28 +61,25 @@
       const figures = (cat.items || []).map(figureHTML).join("");
       let extras = "";
       if (cat.videos && cat.videos.length) {
-        extras += `<div class="video-grid">${cat.videos.map(videoHTML).join("")}</div>`;
-      }
-      if (cat.driveFolderId) {
-        extras += `<div class="music-drive">
-            <p class="music-drive__label"><span class="cat__dot" aria-hidden="true"></span>Recordings — click any clip to play</p>
-            <div class="music-drive__frame">
-              <iframe src="https://drive.google.com/embeddedfolderview?id=${cat.driveFolderId}#grid"
-                title="Piano recordings on Google Drive" loading="lazy"></iframe>
-            </div>
-            <a class="btn btn--ghost" href="https://drive.google.com/drive/folders/${cat.driveFolderId}" target="_blank" rel="noopener">
-              Open recordings in Google Drive
+        extras += `<div class="music-recordings">
+            <p class="music-drive__label"><span class="cat__dot" aria-hidden="true"></span>Recordings — tap to play</p>
+            <div class="video-grid">${cat.videos.map(videoHTML).join("")}</div>`;
+        if (cat.driveFolderId) {
+          extras += `<a class="music-drive__link" href="https://drive.google.com/drive/folders/${cat.driveFolderId}" target="_blank" rel="noopener">
+              More on Google Drive
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
-            </a>
-          </div>`;
+            </a>`;
+        }
+        extras += `</div>`;
       }
+      const galleryCls = "gallery" + ((cat.items || []).length <= 2 ? " gallery--pair" : "");
       return `<section class="cat reveal" id="cat-${cat.id}">
           <div class="cat__head">
             <span class="cat__kicker"><span class="cat__dot" aria-hidden="true"></span>${esc(cat.kicker)}</span>
             <h3 class="cat__title">${cat.title}</h3>
             ${cat.blurb ? `<p class="cat__blurb">${cat.blurb}</p>` : ""}
           </div>
-          <div class="gallery">${figures}</div>
+          <div class="${galleryCls}">${figures}</div>
           ${extras}
         </section>`;
     }).join("");
