@@ -8,6 +8,80 @@
   const $  = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
+  /* ---------- Render "Beyond Code" from beyond-data.js (must run first) ---------- */
+  renderBeyond();
+
+  function sizeClass(w, h) {
+    const r = w / h;
+    if (r >= 1.35) return " gallery__item--wide";
+    if (r <= 0.78) return " gallery__item--tall";
+    return "";
+  }
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function figureHTML(it) {
+    const isSvg = /\.svg$/.test(it.img);
+    const caption = it.placeholder ? "" : `${esc(it.location || "")} — ${esc(it.caption || "")}`;
+    const media = isSvg
+      ? `<img src="${it.img}" width="${it.w}" height="${it.h}" loading="lazy" decoding="async" alt="${esc(it.alt || "")}" />`
+      : `<picture><source type="image/webp" srcset="${it.img.replace(/\.jpg$/, ".webp")}" />` +
+        `<img src="${it.img}" width="${it.w}" height="${it.h}" loading="lazy" decoding="async" alt="${esc(it.alt || "")}" /></picture>`;
+    const cap = (it.location || it.caption)
+      ? `<figcaption><span>${esc(it.location || "")}</span>${esc(it.caption || "")}</figcaption>` : "";
+    return `<figure class="gallery__item${sizeClass(it.w, it.h)}${it.placeholder ? " is-placeholder" : ""}" data-caption="${caption}">${media}${cap}</figure>`;
+  }
+  function videoHTML(v) {
+    const src = v.type === "drive"
+      ? `https://drive.google.com/file/d/${v.id}/preview`
+      : `https://www.youtube-nocookie.com/embed/${v.id}`;
+    return `<div class="video-embed"><iframe src="${src}" title="${esc(v.title || "Video")}" loading="lazy" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div>`;
+  }
+  function renderBeyond() {
+    const data = window.BEYOND_DATA;
+    if (!data) return;
+
+    const statsEl = document.getElementById("beyondStats");
+    if (statsEl && Array.isArray(data.stats)) {
+      statsEl.innerHTML = data.stats.map((s) =>
+        `<li><span class="beyond__num" data-count="${s.num}" data-suffix="${s.suffix || ""}">0</span>` +
+        `<span class="beyond__label">${esc(s.label)}</span></li>`
+      ).join("");
+    }
+
+    const wrap = document.getElementById("beyondCategories");
+    if (!wrap || !Array.isArray(data.categories)) return;
+    wrap.innerHTML = data.categories.map((cat) => {
+      const figures = (cat.items || []).map(figureHTML).join("");
+      let extras = "";
+      if (cat.videos && cat.videos.length) {
+        extras += `<div class="video-grid">${cat.videos.map(videoHTML).join("")}</div>`;
+      }
+      if (cat.driveFolderId) {
+        extras += `<div class="music-drive">
+            <p class="music-drive__label"><span class="cat__dot" aria-hidden="true"></span>Recordings — click any clip to play</p>
+            <div class="music-drive__frame">
+              <iframe src="https://drive.google.com/embeddedfolderview?id=${cat.driveFolderId}#grid"
+                title="Piano recordings on Google Drive" loading="lazy"></iframe>
+            </div>
+            <a class="btn btn--ghost" href="https://drive.google.com/drive/folders/${cat.driveFolderId}" target="_blank" rel="noopener">
+              Open recordings in Google Drive
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </a>
+          </div>`;
+      }
+      return `<section class="cat reveal" id="cat-${cat.id}">
+          <div class="cat__head">
+            <span class="cat__kicker"><span class="cat__dot" aria-hidden="true"></span>${esc(cat.kicker)}</span>
+            <h3 class="cat__title">${cat.title}</h3>
+            ${cat.blurb ? `<p class="cat__blurb">${cat.blurb}</p>` : ""}
+          </div>
+          <div class="gallery">${figures}</div>
+          ${extras}
+        </section>`;
+    }).join("");
+  }
+
   /* ---------- Year ---------- */
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -167,7 +241,7 @@
   }
 
   /* ---------- Lightbox gallery ---------- */
-  const figures = $$(".gallery__item");
+  const figures = $$(".gallery__item:not(.is-placeholder)");
   const lightbox = $("#lightbox");
   const lbImg = $("#lbImg");
   const lbCaption = $("#lbCaption");
@@ -232,6 +306,29 @@
         const dir = e.shiftKey ? -1 : 1;
         focusables[(idx + dir + focusables.length) % focusables.length].focus();
       }
+    });
+  }
+
+  /* ---------- 3D tilt on gallery photos (pointer + motion-safe) ---------- */
+  if (!prefersReduced && window.matchMedia("(pointer: fine)").matches) {
+    const MAX = 7; // degrees
+    $$(".gallery__item:not(.is-placeholder)").forEach((el) => {
+      let raf = null;
+      el.addEventListener("mousemove", (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          const r = el.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          el.style.setProperty("--rx", (py * -MAX).toFixed(2) + "deg");
+          el.style.setProperty("--ry", (px * MAX).toFixed(2) + "deg");
+          raf = null;
+        });
+      });
+      el.addEventListener("mouseleave", () => {
+        el.style.setProperty("--rx", "0deg");
+        el.style.setProperty("--ry", "0deg");
+      });
     });
   }
 })();

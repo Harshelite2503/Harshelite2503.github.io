@@ -24,6 +24,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <!-- Three.js for the 3D globe (loaded as an ES module from a CDN; no build step) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -471,104 +481,27 @@
           <span class="section__kicker"><span class="section__num">05</span> Beyond Code</span>
           <h2 class="section__title">Off the clock,<br>I chase <em>blue water</em> &amp; <em>new flavors.</em></h2>
           <p class="section__sub">
-            Systems are my craft; the world is my hobby. I dive reefs, collect cities,
-            and treat every new cuisine as a side quest. A few frames from the road —
-            <!-- TODO Harsh: tweak the numbers below to match your real counts -->
+            Systems are my craft; the world is my hobby — diving reefs, collecting cities,
+            befriending strays, and always finding the nearest piano.
           </p>
         </div>
 
-        <ul class="beyond__stats reveal" aria-label="Travel highlights">
-          <li><span class="beyond__num" data-count="12" data-suffix="+">0</span><span class="beyond__label">Countries</span></li>
-          <li><span class="beyond__num" data-count="25" data-suffix="+">0</span><span class="beyond__label">Cities explored</span></li>
-          <li><span class="beyond__num" data-count="15" data-suffix="+">0</span><span class="beyond__label">Dives logged</span></li>
-          <li><span class="beyond__num" data-count="50" data-suffix="+">0</span><span class="beyond__label">Cuisines tried</span></li>
-        </ul>
-
-        <!-- Gallery -->
-        <div class="gallery reveal" id="gallery">
-          <!-- Each figure is a lightbox trigger -->
-          <figure class="gallery__item gallery__item--tall" data-caption="Descending into the blue — scuba diving">
-            <picture><source type="image/webp" srcset="assets/img/scuba-dive.webp" /><img src="assets/img/scuba-dive.jpg" width="2000" height="1500" loading="lazy" decoding="async" alt="Scuba diver descending over a reef into deep blue water" /></picture>
-            <figcaption><span>Underwater</span>Into the blue</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="The Grand Palace, Bangkok, Thailand">
-            <picture><source type="image/webp" srcset="assets/img/temple.webp" /><img src="assets/img/temple.jpg" width="1125" height="1500" loading="lazy" decoding="async" alt="Golden spires of the Grand Palace in Bangkok against a blue sky" /></picture>
-            <figcaption><span>Bangkok</span>Grand Palace</figcaption>
-          </figure>
-
-          <figure class="gallery__item gallery__item--wide" data-caption="Kayaking beneath the limestone karsts — Thailand">
-            <picture><source type="image/webp" srcset="assets/img/kayak.webp" /><img src="assets/img/kayak.jpg" width="1800" height="1674" loading="lazy" decoding="async" alt="Kayaking on emerald water surrounded by towering limestone cliffs" /></picture>
-            <figcaption><span>Thailand</span>Karst kayaking</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="Reef life up close">
-            <picture><source type="image/webp" srcset="assets/img/coral.webp" /><img src="assets/img/coral.jpg" width="1600" height="1200" loading="lazy" decoding="async" alt="Vibrant coral formations on the sea floor" /></picture>
-            <figcaption><span>Underwater</span>Reef life</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="Statue of Liberty, New York City">
-            <picture><source type="image/webp" srcset="assets/img/liberty.webp" /><img src="assets/img/liberty.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="The Statue of Liberty with Harsh standing in front" /></picture>
-            <figcaption><span>New York</span>Lady Liberty</figcaption>
-          </figure>
-
-          <figure class="gallery__item gallery__item--tall" data-caption="Golden Gate Bridge, San Francisco">
-            <picture><source type="image/webp" srcset="assets/img/goldengate.webp" /><img src="assets/img/goldengate.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Harsh at a lookout over the Golden Gate Bridge" /></picture>
-            <figcaption><span>San Francisco</span>Golden Gate</figcaption>
-          </figure>
-
-          <figure class="gallery__item gallery__item--wide" data-caption="San Diego skyline at dusk">
-            <picture><source type="image/webp" srcset="assets/img/sandiego.webp" /><img src="assets/img/sandiego.jpg" width="1800" height="1350" loading="lazy" decoding="async" alt="San Diego skyline across the water at dusk" /></picture>
-            <figcaption><span>California</span>San Diego dusk</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="Inside the Sphere, Las Vegas">
-            <picture><source type="image/webp" srcset="assets/img/sphere.webp" /><img src="assets/img/sphere.jpg" width="1500" height="1125" loading="lazy" decoding="async" alt="Immersive cosmic visuals inside the Sphere in Las Vegas" /></picture>
-            <figcaption><span>Las Vegas</span>The Sphere</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="Bellagio fountains, Las Vegas">
-            <picture><source type="image/webp" srcset="assets/img/bellagio.webp" /><img src="assets/img/bellagio.jpg" width="1500" height="844" loading="lazy" decoding="async" alt="The Bellagio fountains lit up at night" /></picture>
-            <figcaption><span>Las Vegas</span>Bellagio</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="New friends — a pack of samoyeds">
-            <picture><source type="image/webp" srcset="assets/img/samoyed.webp" /><img src="assets/img/samoyed.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Harsh kneeling with a group of fluffy white samoyed dogs" /></picture>
-            <figcaption><span>Detour</span>New friends</figcaption>
-          </figure>
-
-          <figure class="gallery__item gallery__item--wide" data-caption="Out on the water">
-            <picture><source type="image/webp" srcset="assets/img/onwater.webp" /><img src="assets/img/onwater.jpg" width="1400" height="1050" loading="lazy" decoding="async" alt="Harsh in a life jacket and cap on a boat over open water" /></picture>
-            <figcaption><span>Open water</span>On the boat</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="Golden hour over the coast">
-            <picture><source type="image/webp" srcset="assets/img/sunset.webp" /><img src="assets/img/sunset.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Sunset sky over a palm-lined coastal road" /></picture>
-            <figcaption><span>Golden hour</span>Coastline</figcaption>
-          </figure>
-
-          <figure class="gallery__item gallery__item--wide" data-caption="Gliding over the reef">
-            <picture><source type="image/webp" srcset="assets/img/scuba-reef.webp" /><img src="assets/img/scuba-reef.jpg" width="2000" height="1500" loading="lazy" decoding="async" alt="Scuba diver gliding over a shallow reef" /></picture>
-            <figcaption><span>Underwater</span>Over the reef</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="Neon nights, Las Vegas">
-            <picture><source type="image/webp" srcset="assets/img/fremont.webp" /><img src="assets/img/fremont.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Bright neon signs along a Las Vegas street at night" /></picture>
-            <figcaption><span>Las Vegas</span>Neon nights</figcaption>
-          </figure>
-
-          <figure class="gallery__item gallery__item--tall" data-caption="A quiet walk through the green">
-            <picture><source type="image/webp" srcset="assets/img/vineyard.webp" /><img src="assets/img/vineyard.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Harsh walking along a wooden path through lush greenery" /></picture>
-            <figcaption><span>Off the grid</span>Green miles</figcaption>
-          </figure>
-
-          <figure class="gallery__item" data-caption="Manhattan after dark">
-            <picture><source type="image/webp" srcset="assets/img/nyc.webp" /><img src="assets/img/nyc.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="Manhattan skyscrapers glowing in the night fog" /></picture>
-            <figcaption><span>New York</span>City of lights</figcaption>
-          </figure>
+        <!-- Interactive 3D globe of places visited (Three.js — degrades gracefully) -->
+        <div class="globe-wrap reveal">
+          <div class="globe" id="globe" role="img" aria-label="Interactive 3D globe of places Harsh has visited">
+            <div class="globe__fallback" aria-hidden="true"></div>
+            <div class="globe__labels" id="globeLabels"></div>
+          </div>
+          <p class="globe__hint"><span>Drag to spin · places I've wandered</span></p>
         </div>
 
-        <p class="beyond__foot reveal">Got a dive site or a hole-in-the-wall restaurant I need to try? <a href="#contact">Tell me.</a></p>
+        <!-- Stats — edit the numbers in assets/js/beyond-data.js -->
+        <ul class="beyond__stats reveal" id="beyondStats" aria-label="Travel highlights"></ul>
+
+        <!-- Themed sub-sections — all content lives in assets/js/beyond-data.js -->
+        <div id="beyondCategories"></div>
+
+        <p class="beyond__foot reveal">Got a dive site, a hole-in-the-wall restaurant, or a piece I should learn? <a href="#contact">Tell me.</a></p>
       </div>
     </section>
 
@@ -641,6 +574,8 @@
     </button>
   </div>
 
+  <script src="assets/js/beyond-data.js"></script>
   <script src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/globe.js"></script>
 </body>
 </html>

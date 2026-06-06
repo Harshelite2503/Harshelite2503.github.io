@@ -934,6 +934,137 @@ em { font-style: italic; }
 .beyond__foot a { color: var(--accent); font-weight: 600; border-bottom: 1px solid currentColor; }
 
 /* =========================================================
+   BEYOND — 3D globe
+   ========================================================= */
+.globe-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: clamp(1rem, 3vw, 2rem) auto clamp(2rem, 5vw, 3rem);
+}
+.globe {
+  position: relative;
+  width: min(440px, 82vw);
+  aspect-ratio: 1 / 1;
+  touch-action: pan-y;
+}
+.globe canvas { display: block; width: 100% !important; height: 100% !important; cursor: grab; }
+.globe canvas:active { cursor: grabbing; }
+/* CSS fallback sphere (shown until/if the 3D globe initializes) */
+.globe__fallback {
+  position: absolute; inset: 8%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(94,234,212,0.35), transparent 55%),
+    radial-gradient(circle at 70% 75%, rgba(251,146,60,0.28), transparent 55%),
+    radial-gradient(circle at 50% 50%, #1a2230, #0a0c10 75%);
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.6), 0 0 50px var(--glow-teal);
+  border: 1px solid var(--border);
+}
+.globe.is-3d .globe__fallback { display: none; }
+.globe__labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.globe__label {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  border: 1px solid var(--border);
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  will-change: transform, opacity;
+  transition: opacity 0.2s linear;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.globe__label::before {
+  content: ""; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); flex: none;
+}
+.globe__label.is-home::before { background: var(--warm); box-shadow: 0 0 6px var(--warm); }
+.globe__hint {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* =========================================================
+   BEYOND — themed categories
+   ========================================================= */
+.cat { margin-top: clamp(3rem, 7vw, 5.5rem); }
+.cat:first-child { margin-top: 0; }
+.cat__head { max-width: 720px; margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+.cat__kicker {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.cat__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--glow-teal); }
+.cat__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.cat__title em { font-style: italic; color: var(--accent); }
+.cat__blurb { margin-top: 0.75rem; color: var(--text-dim); font-size: 1.02rem; max-width: 56ch; }
+
+/* tilt base for gallery photos (JS sets --rx/--ry on pointer devices) */
+.gallery__item {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.4s var(--ease);
+}
+.gallery__item.is-placeholder { cursor: default; border-style: dashed; }
+.gallery__item.is-placeholder img { opacity: 0.85; }
+.gallery__item.is-placeholder::after { display: none; }
+
+/* =========================================================
+   BEYOND — music (videos + Drive)
+   ========================================================= */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.video-embed {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+.video-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+.music-drive { margin-top: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.85rem; }
+.music-drive__label {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  letter-spacing: 0.04em; color: var(--text-dim);
+}
+.music-drive__frame {
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.music-drive__frame iframe { width: 100%; height: 340px; border: 0; display: block; }
+
+/* =========================================================
    CONTACT
    ========================================================= */
 .contact { padding-bottom: clamp(5rem, 10vw, 9rem); }

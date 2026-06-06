@@ -1,78 +1,104 @@
 # Harsh Vardhan Gupta — Portfolio
 
 A single-page personal portfolio. **Systems engineer × explorer** — editorial dark/light
-design with a cool-teal (engineering) and warm-amber (travel) accent system.
+design with a cool-teal (engineering) and warm-amber (travel) accent system, an interactive
+**3D globe** of places visited, and a themed "Off the clock" gallery you can edit in one file.
 
-Pure static site — **no build step, no dependencies.** Just HTML, CSS, and vanilla JS.
+Static site — **no build step.** Plain HTML/CSS/JS. The only dependency is Three.js, loaded
+from a CDN at runtime for the globe.
 
 ## Preview locally
 
-Open a terminal in this folder and run any static server, e.g.:
+> ⚠️ **Use a local server, not a double-click.** The 3D globe is an ES module, and browsers
+> block module scripts when you open a file directly (`file://`). A server fixes this:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then visit **http://localhost:8000**. (Opening `index.html` directly also works, but a
-server is closer to production.)
+Then visit **http://localhost:8000**. (On the live https site this is a non-issue.)
 
-## Deploy (free options)
+## Deploy
 
-Because it's static, you can drag-and-drop the whole folder:
+Already hosted on **GitHub Pages**: https://harshelite2503.github.io/
+To update after editing:
 
-- **Netlify** — drag the folder onto https://app.netlify.com/drop
-- **Vercel** — `vercel` in this folder, or import via the dashboard
-- **GitHub Pages** — push to a repo, enable Pages on the `main` branch (root)
-- **Cloudflare Pages** — connect the repo, no build command, output dir `/`
+```bash
+git add -A
+git commit -m "update"
+git push
+```
+
+Pages rebuilds in ~1 minute. (Also works on Netlify / Vercel / Cloudflare Pages — static, no build command.)
 
 ## Structure
 
 ```
-index.html                 # all the content/markup
-assets/css/styles.css      # design system + responsive + light/dark themes
-assets/js/main.js          # theme toggle, nav, scroll reveals, count-ups, lightbox
-assets/img/                # web-optimized photos (WebP + JPG fallback) + favicon + OG image
-assets/Harsh_..._Resume.pdf# downloadable résumé (linked from the nav + contact)
-Harsh_photos/              # your original photos (kept for reference; not used by the site)
-Harsh_CV_final.pdf         # your original résumé
+index.html                      # markup + the Three.js import map
+assets/css/styles.css           # design system, responsive, light/dark
+assets/js/main.js               # theme, nav, reveals, count-ups, lightbox, 3D tilt,
+                                #   and the renderer for the "Off the clock" sections
+assets/js/beyond-data.js        # ← THE FILE YOU EDIT: all "Off the clock" content
+assets/js/globe.js              # the interactive 3D globe (Three.js)
+assets/img/                     # hero/about photos, favicon, OG image, résumé
+assets/img/beyond/<category>/   # the themed gallery photos (cities, furry, activities, music)
 ```
 
-Photos were converted from HEIC to optimized **WebP (primary) + JPG (fallback)**, EXIF-rotated,
-stripped of metadata, and resized. Originals are untouched in `Harsh_photos/`.
+## ✏️ Editing "Off the clock" — everything is in `assets/js/beyond-data.js`
 
-## Things to personalize  ⚠️
+That one file controls the stats, the globe pins, and the four sections
+(**Exploring cities · Furry friends · Activities · At the piano**). The top of the file has
+step-by-step comments. The essentials:
 
-Search the code for `TODO Harsh` — there are a few spots to make it truly yours:
-
-1. **Social links** (`index.html`, Contact section): the LinkedIn and GitHub icons currently
-   point to placeholder URLs. Drop in your real profile links.
-2. **Travel stats** (`index.html`, Beyond Code section): the numbers
-   (`12+ countries`, `25+ cities`, `15+ dives`, `50+ cuisines`) are placeholders — set them to
-   your real counts via the `data-count` attributes.
-3. **Photo captions/locations** (Beyond Code gallery): I captioned each shot with my best guess
-   at the place (Bangkok, San Diego, Las Vegas, etc.). Fix any I got wrong in the `figcaption`
-   and `data-caption` of each `<figure>`.
-
-Everything else — email (`harshelite.gupta@gmail.com`), phone, experience, projects, publications —
-is pulled straight from your résumé.
-
-## Swapping or adding photos
-
-1. Drop a new image into `Harsh_photos/` (or anywhere).
-2. Convert + optimize it (macOS example):
-   ```bash
-   sips -s format jpeg INPUT.HEIC --out assets/img/NAME.jpg
-   magick assets/img/NAME.jpg -auto-orient -strip -resize '1500x1500>' -quality 84 assets/img/NAME.jpg
-   magick assets/img/NAME.jpg -quality 82 assets/img/NAME.webp
+**Add a photo to a section**
+1. Drop the image into the matching folder, e.g. `assets/img/beyond/cities/tokyo.jpg`
+   (optionally make a `.webp` next to it for speed: `magick tokyo.jpg -quality 82 tokyo.webp`)
+2. Add one line to that section's `items` array:
+   ```js
+   { img: "assets/img/beyond/cities/tokyo.jpg", w: 1200, h: 1600,
+     location: "Tokyo", caption: "Shibuya crossing", alt: "Neon crossing at night" }
    ```
-3. Add a `<figure class="gallery__item">` block in the Beyond Code gallery, following the
-   existing pattern (include `width`/`height` to avoid layout shift).
+   `w`/`h` are the image's pixel dimensions (they prevent layout jump).
 
-## Accessibility & quality notes
+**Add a new section** — copy one of the category blocks in `categories: [ ... ]` and give it a
+new `id`, `kicker`, `title`, `blurb`, and `items`.
 
-- Light **and** dark themes (toggle in the nav; respects your OS preference, remembers your choice).
-- Respects `prefers-reduced-motion` (animations and count-ups degrade gracefully).
-- Keyboard-accessible nav, gallery, and lightbox (Esc / ← / → in the viewer).
-- Semantic landmarks, alt text on every photo, visible focus rings, AA-contrast color pairs.
-- Lazy-loaded images with reserved dimensions (no layout shift), WebP with JPG fallback.
-- Responsive from 360px phones up to large desktops.
+**Edit the travel numbers** — change the `stats` array at the top.
+
+**Add/remove globe pins** — edit the `places` array (`{ lat, lng, label }`; `home: true` glows amber).
+
+## 🎹 The Music section (your videos)
+
+Two ways to show your piano videos — pick either or both:
+
+1. **Google Drive folder (already wired up).** Your folder is embedded on the page. For visitors
+   to see it (instead of a Google sign-in box), open the folder in Drive → **Share** →
+   **General access → "Anyone with the link" → Viewer.** That's the only step needed.
+2. **Featured clips inline (smoothest playback).** Upload to YouTube (unlisted is fine) and add
+   them to the `music.videos` array:
+   ```js
+   videos: [ { type: "youtube", id: "VIDEO_ID", title: "Clair de Lune" } ]
+   ```
+   (Drive files also work: `{ type: "drive", id: "DRIVE_FILE_ID", title: "..." }`.)
+
+Replace the two placeholder tiles by adding your real piano photos to
+`assets/img/beyond/music/` and listing them in `music.items` (then delete the placeholder lines).
+
+## Still to personalize  ⚠️
+
+Search the code for `TODO Harsh`:
+1. **Social links** (Contact section in `index.html`) — add your real LinkedIn/GitHub URLs.
+2. **Travel numbers** (`beyond-data.js` → `stats`) — set your real counts.
+3. **Music** — make the Drive folder public (above) and/or add YouTube clips + your piano photos.
+
+Everything else (email, phone, experience, projects, publications, captions) is already filled in.
+
+## Quality notes
+
+- Interactive **3D globe** (Three.js) with location pins — falls back to a CSS sphere if WebGL
+  is unavailable, and stops auto-spinning under `prefers-reduced-motion`.
+- Light **and** dark themes; respects OS preference and remembers your choice.
+- Subtle **3D tilt** on gallery photos (pointer devices only, motion-safe).
+- Keyboard-accessible nav, gallery, and lightbox (Esc / ← / →).
+- Lazy-loaded images with reserved dimensions (no layout shift); WebP with JPG fallback.
+- Responsive from 360px phones to large desktops.
