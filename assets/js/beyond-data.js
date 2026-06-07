@@ -17,10 +17,10 @@
 
    HOW TO ADD A MUSIC VIDEO
    ------------------------
-   Easiest: keep them in your Google Drive folder (set sharing to
-   "Anyone with the link") — they already show on the page via the
-   embedded folder below. To feature a specific one inline, add it to
-   `music.videos` (YouTube is smoothest; Drive also works):
+   Drop the clip in your Google Drive folder (sharing must be
+   "Anyone with the link"), grab its file ID (the part after /file/d/
+   in the share link), and add one line to `music.videos` below. It
+   shows up inline next to the photos. YouTube works too (smoothest):
         { type: "youtube", id: "VIDEO_ID", title: "Clair de Lune" }
         { type: "drive",   id: "DRIVE_FILE_ID", title: "Nocturne" }
 */

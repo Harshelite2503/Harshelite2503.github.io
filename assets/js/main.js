@@ -58,29 +58,37 @@
     const wrap = document.getElementById("beyondCategories");
     if (!wrap || !Array.isArray(data.categories)) return;
     wrap.innerHTML = data.categories.map((cat) => {
-      const figures = (cat.items || []).map(figureHTML).join("");
-      let extras = "";
-      if (cat.videos && cat.videos.length) {
-        extras += `<div class="music-recordings">
-            <p class="music-drive__label"><span class="cat__dot" aria-hidden="true"></span>Recordings — tap to play</p>
-            <div class="video-grid">${cat.videos.map(videoHTML).join("")}</div>`;
-        if (cat.driveFolderId) {
-          extras += `<a class="music-drive__link" href="https://drive.google.com/drive/folders/${cat.driveFolderId}" target="_blank" rel="noopener">
-              More on Google Drive
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
-            </a>`;
-        }
-        extras += `</div>`;
-      }
-      const galleryCls = "gallery" + ((cat.items || []).length <= 2 ? " gallery--pair" : "");
-      return `<section class="cat reveal" id="cat-${cat.id}">
-          <div class="cat__head">
+      const head = `<div class="cat__head">
             <span class="cat__kicker"><span class="cat__dot" aria-hidden="true"></span>${esc(cat.kicker)}</span>
             <h3 class="cat__title">${cat.title}</h3>
             ${cat.blurb ? `<p class="cat__blurb">${cat.blurb}</p>` : ""}
-          </div>
+          </div>`;
+
+      /* Music-style category: photos + inline recordings share ONE grid */
+      if (cat.videos && cat.videos.length) {
+        const vids = cat.videos.map(videoHTML);
+        const phs = (cat.items || []).map(figureHTML);
+        const tiles = [];
+        for (let i = 0; i < Math.max(vids.length, phs.length); i++) {
+          if (vids[i]) tiles.push(vids[i]);
+          if (phs[i]) tiles.push(phs[i]);
+        }
+        const drive = cat.driveFolderId
+          ? `<div class="music-media__foot"><a class="music-drive__link" href="https://drive.google.com/drive/folders/${cat.driveFolderId}" target="_blank" rel="noopener">More on Google Drive <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></div>`
+          : "";
+        return `<section class="cat reveal" id="cat-${cat.id}">
+          ${head}
+          <div class="music-media">${tiles.join("")}</div>
+          ${drive}
+        </section>`;
+      }
+
+      /* Standard photo gallery */
+      const figures = (cat.items || []).map(figureHTML).join("");
+      const galleryCls = "gallery" + ((cat.items || []).length <= 2 ? " gallery--pair" : "");
+      return `<section class="cat reveal" id="cat-${cat.id}">
+          ${head}
           <div class="${galleryCls}">${figures}</div>
-          ${extras}
         </section>`;
     }).join("");
   }

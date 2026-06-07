@@ -1037,20 +1037,24 @@ em { font-style: italic; }
 /* =========================================================
    BEYOND — music (videos + Drive)
    ========================================================= */
-.music-recordings { margin-top: 1.75rem; }
-.music-drive__label {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  font-family: var(--font-mono); font-size: 0.76rem;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 1.1rem;
-}
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 250px));
-  gap: 1.25rem;
+/* photos + inline recordings share one centered shelf (no sub-sections) */
+.music-media {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: flex-start;
+  gap: clamp(1rem, 2.4vw, 1.5rem);
+  max-width: 720px;
+  margin-inline: auto;
 }
+.music-media > .video-card,
+.music-media > .gallery__item {
+  flex: 0 1 200px;
+  min-width: 168px;
+  max-width: 224px;
+  margin: 0;
+}
+.music-media__foot { text-align: center; margin-top: clamp(1.5rem, 3vw, 2rem); }
 .video-card { display: flex; flex-direction: column; gap: 0.65rem; }
 .video-embed {
   aspect-ratio: 9 / 16;
@@ -1068,10 +1072,19 @@ em { font-style: italic; }
 .video-card__cap .icon { width: 1em; height: 1em; color: var(--accent); stroke-width: 2; }
 .music-drive__link {
   display: inline-flex; align-items: center; gap: 0.4rem;
-  margin-top: 1.5rem;
   font-size: 0.92rem; font-weight: 600; color: var(--accent);
 }
 .music-drive__link:hover { text-decoration: underline; }
+/* phones: tidy 2-up instead of a lonely single column */
+@media (max-width: 560px) {
+  .music-media { gap: 0.85rem; }
+  .music-media > .video-card,
+  .music-media > .gallery__item {
+    flex: 1 1 140px;
+    min-width: 0;
+    max-width: calc(50% - 0.5rem);
+  }
+}
 
 /* =========================================================
    CONTACT
