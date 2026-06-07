@@ -78,7 +78,7 @@
           : "";
         return `<section class="cat reveal" id="cat-${cat.id}">
           ${head}
-          <div class="music-media">${tiles.join("")}</div>
+          <div class="gallery">${tiles.join("")}</div>
           ${drive}
         </section>`;
       }
