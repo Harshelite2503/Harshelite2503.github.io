@@ -50,7 +50,7 @@ function glowTexture(hex) {
 
 function initGlobe() {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const TEAL = 0x2dd4bf, AMBER = 0xfb923c;
+  const TEAL = 0x22d3ee, AMBER = 0xa78bfa;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -101,8 +101,8 @@ function initGlobe() {
   group.add(points);
 
   // Pins + HTML labels
-  const tealTex = glowTexture("rgba(94,234,212,1)");
-  const amberTex = glowTexture("rgba(251,146,60,1)");
+  const tealTex = glowTexture("rgba(103,232,249,1)");
+  const amberTex = glowTexture("rgba(196,181,253,1)");
   const pins = [];
   places.forEach((p) => {
     const v = latLngToVec3(p.lat, p.lng, 1.0);

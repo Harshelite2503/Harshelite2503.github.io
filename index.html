@@ -6,7 +6,7 @@
   <title>Harsh Vardhan Gupta — Systems Software Engineer</title>
   <meta name="description" content="Harsh Vardhan Gupta is a systems software engineer at Nutanix building distributed platforms, Kubernetes workloads, and Linux internals — and an avid scuba diver, traveler, and food explorer." />
   <meta name="author" content="Harsh Vardhan Gupta" />
-  <meta name="theme-color" content="#0A0C10" />
+  <meta name="theme-color" content="#04060C" />
 
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website" />
@@ -21,9 +21,12 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <!-- Boot flag: shows the preloader; fx.js removes it. CSS has a failsafe auto-hide. -->
+  <script>document.documentElement.classList.add("is-booting");</script>
 
   <!-- Three.js for the 3D globe (loaded as an ES module from a CDN; no build step) -->
   <script type="importmap">
@@ -37,6 +40,30 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== PRELOADER (boot sequence) ===================== -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <span class="preloader__brand">HVG<span class="preloader__caret">_</span></span>
+      <div class="preloader__bar"><span id="preBar"></span></div>
+      <div class="preloader__row">
+        <span class="preloader__status" id="preStatus">booting systems…</span>
+        <span class="preloader__pct" id="prePct">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 3D PARTICLE BACKGROUND ===================== -->
+  <div class="bg3d" id="bg3d" aria-hidden="true"></div>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollBar"></span></div>
+
+  <!-- Custom cursor (pointer devices only; enabled by fx.js) -->
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <div class="cursor__dot" id="cursorDot"></div>
+    <div class="cursor__ring" id="cursorRing"></div>
+  </div>
 
   <!-- ===================== NAV ===================== -->
   <header class="nav" id="nav">
@@ -99,7 +126,7 @@
         <div class="hero__content">
           <p class="eyebrow reveal">
             <span class="eyebrow__dot" aria-hidden="true"></span>
-            Bengaluru, India · Systems Software Engineer
+            <span data-scramble>Bengaluru, India · Systems Software Engineer</span>
           </p>
           <h1 class="hero__title reveal">
             I build the systems
@@ -576,6 +603,11 @@
 
   <script src="assets/js/beyond-data.js"></script>
   <script src="assets/js/main.js"></script>
+  <!-- GSAP for the futuristic motion layer (fx.js degrades gracefully without it) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="assets/js/fx.js"></script>
   <script type="module" src="assets/js/globe.js"></script>
+  <script type="module" src="assets/js/hero-3d.js"></script>
 </body>
 </html>

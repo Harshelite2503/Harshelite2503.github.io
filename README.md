@@ -1,11 +1,13 @@
 # Harsh Vardhan Gupta — Portfolio
 
-A single-page personal portfolio. **Systems engineer × explorer** — editorial dark/light
-design with a cool-teal (engineering) and warm-amber (travel) accent system, an interactive
-**3D globe** of places visited, and a themed "Off the clock" gallery you can edit in one file.
+A single-page personal portfolio. **Systems engineer × explorer** — futuristic "Neon Systems"
+design: a full-page **Three.js particle universe** with drifting wireframe geometry, a cyber
+boot-sequence preloader, neon cyan→violet glassmorphism, a custom glowing cursor, magnetic
+buttons, GSAP scroll effects, an interactive **3D globe** of places visited, and a themed
+"Off the clock" gallery you can edit in one file. (Light theme = the clean, minimal mode.)
 
-Static site — **no build step.** Plain HTML/CSS/JS. The only dependency is Three.js, loaded
-from a CDN at runtime for the globe.
+Static site — **no build step.** Plain HTML/CSS/JS. The only runtime dependencies are
+Three.js (particle background + globe) and GSAP (motion), both loaded from a CDN.
 
 ## Preview locally
 
@@ -34,10 +36,14 @@ Pages rebuilds in ~1 minute. (Also works on Netlify / Vercel / Cloudflare Pages 
 ## Structure
 
 ```
-index.html                      # markup + the Three.js import map
-assets/css/styles.css           # design system, responsive, light/dark
+index.html                      # markup + the Three.js import map + GSAP CDN
+assets/css/styles.css           # design system, responsive, light/dark + the "future layer"
 assets/js/main.js               # theme, nav, reveals, count-ups, lightbox, 3D tilt,
                                 #   and the renderer for the "Off the clock" sections
+assets/js/fx.js                 # preloader boot, custom cursor, magnetic buttons,
+                                #   hero word reveal, scramble text, card spotlight/tilt,
+                                #   GSAP scroll effects
+assets/js/hero-3d.js            # full-page 3D particle background (Three.js)
 assets/js/beyond-data.js        # ← THE FILE YOU EDIT: all "Off the clock" content
 assets/js/globe.js              # the interactive 3D globe (Three.js)
 assets/img/                     # hero/about photos, favicon, OG image, résumé
@@ -94,9 +100,16 @@ Everything else (email, phone, experience, projects, publications, captions) is 
 
 ## Quality notes
 
+- Full-page **3D particle background** (Three.js) — mouse parallax, dims as you scroll, pauses
+  in hidden tabs, fewer particles on mobile, skipped entirely under `prefers-reduced-motion`
+  or without WebGL.
+- **Boot-sequence preloader** with a CSS failsafe (auto-hides even if a script fails).
 - Interactive **3D globe** (Three.js) with location pins — falls back to a CSS sphere if WebGL
   is unavailable, and stops auto-spinning under `prefers-reduced-motion`.
-- Light **and** dark themes; respects OS preference and remembers your choice.
+- Light **and** dark themes; dark (the futuristic look) is the default, and your choice is remembered.
+- Custom cursor, magnetic buttons, and card spotlight/tilt run only on pointer devices and are
+  disabled under `prefers-reduced-motion`. GSAP loads from a CDN; everything degrades gracefully
+  without it.
 - Subtle **3D tilt** on gallery photos (pointer devices only, motion-safe).
 - Keyboard-accessible nav, gallery, and lightbox (Esc / ← / →).
 - Lazy-loaded images with reserved dimensions (no layout shift); WebP with JPG fallback.

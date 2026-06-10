@@ -101,15 +101,15 @@
   const root = document.documentElement;
   const themeToggle = $("#themeToggle");
   const stored = (() => { try { return localStorage.getItem("theme"); } catch (e) { return null; } })();
-  const systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-  const initial = stored || (systemLight ? "light" : "dark");
+  // dark-first: the futuristic look is the default; visitors can still toggle
+  const initial = stored || "dark";
   setTheme(initial);
 
   function setTheme(mode) {
     root.setAttribute("data-theme", mode);
     if (themeToggle) themeToggle.setAttribute("aria-pressed", String(mode === "light"));
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", mode === "light" ? "#F7F8FA" : "#0A0C10");
+    if (meta) meta.setAttribute("content", mode === "light" ? "#F7F8FA" : "#04060C");
   }
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
