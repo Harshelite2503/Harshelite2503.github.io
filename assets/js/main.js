@@ -150,6 +150,46 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) closeMenu(); });
   }
 
+  /* ---------- Smooth in-page scrolling ----------
+     Done in JS, not CSS: `html { scroll-behavior: smooth }` makes GSAP
+     ScrollTrigger's refresh measure positions mid-glide, permanently
+     corrupting trigger start/end (the hero goes blank after scrolling). */
+  let scrollAnim = null;
+  let scrollFailsafe = null;
+  function smoothScrollTo(targetY) {
+    if (scrollAnim) cancelAnimationFrame(scrollAnim);
+    if (scrollFailsafe) clearTimeout(scrollFailsafe);
+    const startY = window.scrollY;
+    const dist = targetY - startY;
+    if (prefersReduced || Math.abs(dist) < 2) { window.scrollTo(0, targetY); return; }
+    const dur = Math.min(900, 400 + Math.abs(dist) * 0.05);
+    const t0 = performance.now();
+    const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+    (function step(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      window.scrollTo(0, startY + dist * ease(p));
+      scrollAnim = p < 1 ? requestAnimationFrame(step) : null;
+    })(t0);
+    // land at the target even if rAF is throttled (hidden/occluded tab)
+    scrollFailsafe = setTimeout(() => {
+      scrollFailsafe = null;
+      if (scrollAnim !== null) {
+        cancelAnimationFrame(scrollAnim);
+        scrollAnim = null;
+        window.scrollTo(0, targetY);
+      }
+    }, dur + 250);
+  }
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const target = document.querySelector(a.getAttribute("href"));
+    if (!target) return;
+    e.preventDefault();
+    smoothScrollTo(target.getBoundingClientRect().top + window.scrollY);
+    history.pushState(null, "", a.getAttribute("href"));
+  });
+
   /* ---------- Reveal on scroll ---------- */
   const reveals = $$(".reveal");
   if (prefersReduced || !("IntersectionObserver" in window)) {

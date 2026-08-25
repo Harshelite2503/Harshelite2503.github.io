@@ -100,8 +100,10 @@
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; padding: 0; }
+/* NOTE: no CSS scroll-behavior:smooth here — it corrupts GSAP ScrollTrigger's
+   position measurements during refresh (triggers get stuck, hero turns blank).
+   Smooth anchor scrolling is done in JS instead (main.js). */
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 body {
@@ -1249,7 +1251,6 @@ em { font-style: italic; }
    REDUCED MOTION
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
