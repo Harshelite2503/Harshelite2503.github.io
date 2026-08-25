@@ -771,6 +771,13 @@ em { font-style: italic; }
 .work-card--wide .work-card__title { font-size: clamp(1.6rem, 3vw, 2.1rem); max-width: 18ch; }
 .work-card__desc { color: var(--text-dim); font-size: 0.96rem; max-width: 52ch; }
 .work-card .chips { margin-top: auto; padding-top: 0.4rem; }
+.work-card__link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-mono); font-size: 0.8rem;
+  color: var(--accent); text-decoration: none; width: fit-content;
+}
+.work-card__link:hover { text-decoration: underline; }
+.work-card__link .icon { width: 0.95em; height: 0.95em; }
 
 /* =========================================================
    WRITING — publications
