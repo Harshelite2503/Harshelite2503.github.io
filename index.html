@@ -376,6 +376,30 @@
             </ul>
           </article>
 
+          <article class="work-card work-card--wide reveal">
+            <div class="work-card__meta">
+              <span class="work-card__tag work-card__tag--accent">Quant · Market Microstructure</span>
+              <span class="work-card__year">2026</span>
+            </div>
+            <h3 class="work-card__title">Argus — real-time dark-pool &amp; options-flow surveillance</h3>
+            <p class="work-card__desc">
+              A live market-microstructure engine that streams every S&amp;P 500 trade over
+              WebSockets, detects off-exchange (dark-pool) prints via FINRA TRF attribution, and
+              classifies Intermarket Sweep Orders and block trades from exchange condition codes
+              in real time. A pluggable strategy engine scans the tape for institutional
+              footprints — $200k+ dark prints, sweeps, blocks, ITM put-sells — and pushes alerts
+              to a dashboard that overlays notional-sized dark-pool bubbles on live candlesticks.
+              Each feed worker runs its own asyncio event loop on a dedicated thread; a FastAPI
+              backend fans updates out to the browser at a 1s cadence. The zero-I/O detection
+              core benchmarks at <strong>2.4M trades/s single-threaded (0.42&nbsp;µs per trade)</strong> —
+              roughly 20× headroom over peak US consolidated-tape rates — and parses OCC option
+              symbols at 310k/s, across a 503-name S&amp;P 500 universe.
+            </p>
+            <ul class="chips chips--sm">
+              <li>Python</li><li>asyncio</li><li>WebSockets</li><li>FastAPI</li><li>Market Microstructure</li><li>Options Flow</li>
+            </ul>
+          </article>
+
           <article class="work-card reveal">
             <div class="work-card__meta">
               <span class="work-card__tag">Deep RL · Quant Finance</span>
